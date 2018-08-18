@@ -11,7 +11,7 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:background="@color/colorPrimaryDark"
-        android:backgroundTint="#424242"
+        android:backgroundTint="@color/cardviewcolor"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
         android:padding="@dimen/cardview_compat_inset_shadow"
@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLines="1"
-                        android:textColor="#9E9E9E"
+                        android:textColor="@color/textcolor"
                         tools:text="Section Name"
                         android:paddingRight="4dp"
                         android:paddingEnd="4dp" />
@@ -50,11 +50,10 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:maxLines="1"
-                        android:textColor="#9E9E9E"
+                        android:textColor="@color/textcolor"
                         android:layout_height="wrap_content"
                         tools:text="Author"/>
                 </LinearLayout>
-
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
@@ -81,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="26/11/1998"
-                    android:textColor="#00C853"
+                    android:textColor="@color/datecolor"
                     android:textSize="12sp"
                     android:textAlignment="textEnd"
                     android:gravity="end"
@@ -89,10 +88,10 @@
                 <TextView
                     android:id="@+id/time"
                     android:layout_gravity="end"
-                    android:textColor="#D50000"
+                    android:textColor="@color/timecolor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1:00 PM"
+                    tools:text="1:00 PM"
                     android:textAlignment="textEnd"
                     android:gravity="end"/>
             </LinearLayout>

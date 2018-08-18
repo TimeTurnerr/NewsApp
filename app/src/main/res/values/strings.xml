@@ -8,7 +8,10 @@
     <!-- Strings For Category Preference -->
     <string name="settings_min_category_label">Category</string>
     <string name="settings_min_category_key" translatable="false">category</string>
-    <string name="settings_min_category_default" translatable="false">news</string>
+    <string name="settings_min_category_default" translatable="false">@string/settings_category_news_value</string>
+
+    <string name="settings_category_news_label">News (Default)</string>
+    <string name="settings_category_news_value" translatable="false">news</string>
 
     <string name="settings_category_sport_label">Sports</string>
     <string name="settings_category_sport_value" translatable="false">sport</string>
@@ -30,7 +33,7 @@
     <string name="settings_order_by_key" translatable="false">order_by</string>
     <string name="settings_order_by_default" translatable="false">@string/settings_order_by_newest_value</string>
 
-    <string name="settings_order_by_newest_label">Newest(Default)</string>
+    <string name="settings_order_by_newest_label">Newest (Default)</string>
     <string name="settings_order_by_newest_value" translatable="false">newest</string>
 
     <string name="settings_order_by_relevance_label">Relevance</string>

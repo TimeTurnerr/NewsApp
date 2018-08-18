@@ -18,6 +18,7 @@
         <item>@string/settings_category_film_label</item>
         <item>@string/settings_category_politics_label</item>
         <item>@string/settings_category_sport_label</item>
+        <item>@string/settings_category_news_label</item>
     </string-array>
 
     <string-array name="settings_category_values">
@@ -26,6 +27,6 @@
         <item>@string/settings_category_film_value</item>
         <item>@string/settings_category_politics_value</item>
         <item>@string/settings_category_sport_value</item>
+        <item>@string/settings_category_news_value</item>
     </string-array>
-
 </resources>
