@@ -4,11 +4,16 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
     private static final String LOG_TAG = NewsActivity.class.getName();
-    private static final String USGS_REQUEST_URL =
-            "https://content.guardianapis.com/search?&show-tags=contributor&api-key=9550e4fa-20b2-43c5-a795-b64ba565b6ee";
+    private static final String USGS_REQUEST_URL = "https://content.guardianapis.com/search";
     private static final int News_LOADER_ID = 1;
     private NewsAdapter mAdapter;
     private TextView mEmptyStateTextView;
@@ -53,7 +57,17 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     }
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        return new NewsLoader(this, USGS_REQUEST_URL);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String section = sharedPrefs.getString(getString(R.string.settings_min_category_key), getString(R.string.settings_min_category_default));
+        String orderBy  = sharedPrefs.getString(getString(R.string.settings_order_by_key), getString(R.string.settings_order_by_default));
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", "9550e4fa-20b2-43c5-a795-b64ba565b6ee");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("section", section);
+        Log.e(LOG_TAG,uriBuilder.toString());
+        return new NewsLoader(this, uriBuilder.toString());
     }
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
@@ -68,5 +82,20 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
