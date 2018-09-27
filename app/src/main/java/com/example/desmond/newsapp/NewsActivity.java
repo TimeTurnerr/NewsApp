@@ -63,6 +63,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("show-fields", "thumbnails");
         uriBuilder.appendQueryParameter("api-key", "9550e4fa-20b2-43c5-a795-b64ba565b6ee");
         uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("section", section);

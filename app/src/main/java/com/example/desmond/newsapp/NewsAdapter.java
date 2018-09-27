@@ -1,9 +1,11 @@
 package com.example.desmond.newsapp;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
 public class NewsAdapter extends ArrayAdapter<News> {
@@ -21,9 +23,22 @@ public class NewsAdapter extends ArrayAdapter<News> {
         News currentNews = getItem(position);
         TextView articleTitle = (TextView) listItemView.findViewById(R.id.title);
         articleTitle.setText(currentNews.getTitle());
-        if (currentNews.getAuthor()!=null) {
+        TextView firstName = (TextView) listItemView.findViewById(R.id.fistName);
+        TextView lastName = (TextView) listItemView.findViewById(R.id.lastName);
+        if (currentNews.getAuthor()!=null)
+        {
             TextView articleAuthor = (TextView) listItemView.findViewById(R.id.author);
             articleAuthor.setText(currentNews.getAuthor());
+            String authorName = currentNews.getAuthor();
+            Character firstInitial = Character.toUpperCase(authorName.charAt(0));
+            int lastIndex = authorName.lastIndexOf(" ");
+            Character lastInitial = Character.toUpperCase(authorName.charAt(lastIndex + 1));
+            firstName.setText(firstInitial.toString());
+            lastName.setText(lastInitial.toString());
+        }
+        else {
+            firstName.setText("N/");
+            lastName.setText("A");
         }
         TextView articleSection = (TextView) listItemView.findViewById(R.id.section_name);
         articleSection.setText(currentNews.getSectionName());
