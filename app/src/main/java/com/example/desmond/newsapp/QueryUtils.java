@@ -1,4 +1,10 @@
 package com.example.desmond.newsapp;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import org.json.JSONArray;
@@ -16,8 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 public final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
     private QueryUtils() {
     }
+
     public static List<News> fetchNewsData(String requestUrl) {
         URL url = createUrl(requestUrl);
         String jsonResponse = null;
@@ -29,6 +37,7 @@ public final class QueryUtils {
         List<News> news = extractFeatureFromJson(jsonResponse);
         return news;
     }
+
     private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
@@ -38,6 +47,7 @@ public final class QueryUtils {
         }
         return url;
     }
+
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
         if (url == null) {
@@ -70,6 +80,7 @@ public final class QueryUtils {
         }
         return jsonResponse;
     }
+
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -83,6 +94,7 @@ public final class QueryUtils {
         }
         return output.toString();
     }
+
     private static List<News> extractFeatureFromJson(String newsJSON) {
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
@@ -98,18 +110,31 @@ public final class QueryUtils {
                 String title = currentNews.getString("webTitle");
                 String sectionName = currentNews.getString("sectionName");
                 String url = currentNews.getString("webUrl");
+                String thumbnail = currentNews.getJSONObject("fields").getString("thumbnail");
+                Bitmap bitmap;
+                bitmap = getBitmap(thumbnail);
                 JSONArray tagsArray = currentNews.getJSONArray("tags");
                 String authorName = null;
                 if (tagsArray.length() == 1) {
                     JSONObject contributorTag = (JSONObject) tagsArray.get(0);
                     authorName = contributorTag.getString("webTitle");
                 }
-                News news = new News(sectionName, title, authorName, date, url);
+                News news = new News(sectionName, title, authorName, date, url, bitmap);
                 newss.add(news);
             }
         } catch (JSONException e) {
             Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
         return newss;
+    }
+    public static Bitmap getBitmap(String thumbnail){
+        Bitmap bitmap;
+        try {
+            InputStream in = new URL(thumbnail).openStream();
+            bitmap = BitmapFactory.decodeStream(in);
+        } catch (Exception e) {
+            bitmap = null;
+        }
+        return bitmap;
     }
 }

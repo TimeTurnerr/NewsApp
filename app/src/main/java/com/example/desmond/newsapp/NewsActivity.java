@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
@@ -59,13 +60,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String section = sharedPrefs.getString(getString(R.string.settings_min_category_key), getString(R.string.settings_min_category_default));
-        String orderBy  = sharedPrefs.getString(getString(R.string.settings_order_by_key), getString(R.string.settings_order_by_default));
+        String pageSize  = sharedPrefs.getString(getString(R.string.settings_page_size_key), getString(R.string.settings_page_size_default));
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("show-tags", "contributor");
-        uriBuilder.appendQueryParameter("show-fields", "thumbnails");
+        uriBuilder.appendQueryParameter("show-fields", "thumbnail");
         uriBuilder.appendQueryParameter("api-key", "9550e4fa-20b2-43c5-a795-b64ba565b6ee");
-        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("page-size", pageSize);
         uriBuilder.appendQueryParameter("section", section);
         Log.e(LOG_TAG,uriBuilder.toString());
         return new NewsLoader(this, uriBuilder.toString());

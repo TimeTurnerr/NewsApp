@@ -1,13 +1,24 @@
 package com.example.desmond.newsapp;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 public class NewsAdapter extends ArrayAdapter<News> {
     private static final String DATETIME_SEPARATOR = "T";
     public NewsAdapter(Context context, List<News> earthquakes) {
@@ -25,6 +36,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
         articleTitle.setText(currentNews.getTitle());
         TextView firstName = (TextView) listItemView.findViewById(R.id.fistName);
         TextView lastName = (TextView) listItemView.findViewById(R.id.lastName);
+        ImageView imageView = (ImageView)listItemView.findViewById(R.id.image);
+        imageView.setImageBitmap(currentNews.getmImageUrl());
         if (currentNews.getAuthor()!=null)
         {
             TextView articleAuthor = (TextView) listItemView.findViewById(R.id.author);
@@ -46,12 +59,23 @@ public class NewsAdapter extends ArrayAdapter<News> {
             String originalLocation = currentNews.getTimeInMilliseconds();
             String date = null;
             String time = null;
-            if (originalLocation.contains(DATETIME_SEPARATOR)) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            try {
+                Date date2 = formatter.parse(originalLocation.replaceAll("Z$", "+0000"));
+                System.out.println(date2);
+                System.out.println("time zone : " + TimeZone.getDefault().getID());
+                System.out.println(formatter.format(date2));
+                Log.e("Date", String.valueOf(date2));
 
-                String[] parts = originalLocation.split(DATETIME_SEPARATOR);
-                time = parts[1];
-                date = parts[0];
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+                if (originalLocation.contains(DATETIME_SEPARATOR)) {
+
+                    String[] parts = originalLocation.split(DATETIME_SEPARATOR);
+                    time = parts[1];
+                    date = parts[0];
+                }
             TextView articleDate = (TextView) listItemView.findViewById(R.id.date);
             articleDate.setText(date);
             TextView articleTime = (TextView) listItemView.findViewById(R.id.time);
